@@ -11,9 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.org.serratec.backend.dto.ClienteInserirDTO;
@@ -52,9 +56,11 @@ public class Cliente {
 	@JoinColumn(name = "id_endereco")
 	private Endereco endereco;
 	
-	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos;
+	
+//	@OneToOne(mappedBy = "cliente")  //criado pra ver se dava pra resolver o problema do ID errado na URI
+//	private Foto foto;
 
 	public Cliente(ClienteInserirDTO cliente) {
 
@@ -159,6 +165,14 @@ public class Cliente {
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
+
+//	public Foto getFoto() {
+//		return foto;
+//	}
+//
+//	public void setFoto(Foto foto) {
+//		this.foto = foto;
+//	}
 
 	@Override
 	public int hashCode() {

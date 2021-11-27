@@ -18,7 +18,7 @@ public class ProdutoService {
 	@Autowired
 	private ProdutoRepository pr;
 
-	public List<ProdutoDTO> listar() { // ver como faria para listar por categoria
+	public List<ProdutoDTO> listar() { 
 
 		List<ProdutoDTO> produtosDto = new ArrayList<ProdutoDTO>();
 		List<Produto> produtos = pr.findAll();

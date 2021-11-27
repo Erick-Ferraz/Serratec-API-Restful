@@ -10,6 +10,8 @@ import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(schema = "apiprova")
 public class Foto {
@@ -21,7 +23,11 @@ public class Foto {
 	
 	@Lob
 	private byte[] dados;
+	
+	@Column
 	private String tipo;
+	
+	@Column
 	private String nome;
 	
 	@OneToOne

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -83,7 +84,7 @@ public class ClienteController {
 		return ResponseEntity.notFound().build();
 	}
 	
-	@GetMapping("/fotos/{id}")
+	@GetMapping("/{id}/foto")
 	@ApiOperation(value = "Obter foto do cliente", notes = "Busca de foto correspondente a um cliente")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Retorna uma foto de um cliente"),
 			@ApiResponse(code = 401, message = "Erro de autenticação"),
@@ -105,7 +106,7 @@ public class ClienteController {
 			@ApiResponse(code = 403, message = "Recurso proibido"),
 			@ApiResponse(code = 404, message = "Recurso não encontrado"),
 			@ApiResponse(code = 500, message = "Erro de servidor") })
-	public ResponseEntity<Object> inserirFoto(@Valid @RequestBody Cliente cliente, MultipartFile file) {
+	public ResponseEntity<Object> inserirFoto(@Valid @RequestPart Cliente cliente, @RequestParam("file") MultipartFile file) {
 		try {
 			return ResponseEntity.ok(fs.inserir(cliente, file));
 		} catch (Exception e) {
@@ -114,16 +115,16 @@ public class ClienteController {
 
 	}
 
-	@PostMapping("/adicionar")
+	@PostMapping(value = "/adicionar", consumes = "multipart/form-data")
 	@ApiOperation(value = "Adicionar um cliente", notes = "Inserção de um cliente")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Insere um cliente"),
 			@ApiResponse(code = 401, message = "Erro de autenticação"),
 			@ApiResponse(code = 403, message = "Recurso proibido"),
 			@ApiResponse(code = 404, message = "Recurso não encontrado"),
 			@ApiResponse(code = 500, message = "Erro de servidor") })
-	public ResponseEntity<Object> inserir(@Valid @RequestBody ClienteInserirDTO clienteInserirDto, @RequestParam MultipartFile file) {
+	public ResponseEntity<Object> inserir(@Valid @RequestBody ClienteInserirDTO clienteInserirDto) {
 		try {
-			ClienteDTO clienteDto = cs.inserir(clienteInserirDto, file);
+			ClienteDTO clienteDto = cs.inserir(clienteInserirDto);
 			URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 					.path("/{id}")
 					.buildAndExpand(clienteDto.getId())
@@ -142,9 +143,9 @@ public class ClienteController {
 			@ApiResponse(code = 404, message = "Recurso não encontrado"),
 			@ApiResponse(code = 500, message = "Erro de servidor") })
 	public ResponseEntity<Object> atualizarPorId(@PathVariable Integer id,
-			@Valid @RequestBody ClienteInserirDTO clienteInserirDto, @RequestParam MultipartFile file) {
+			@Valid @RequestBody ClienteInserirDTO clienteInserirDto) {
 		try {
-			if (cs.atualizarPorId(id, clienteInserirDto, file) != null) {
+			if (cs.atualizarPorId(id, clienteInserirDto) != null) {
 				return ResponseEntity.ok(clienteInserirDto);
 			}
 		} catch (IOException e) {

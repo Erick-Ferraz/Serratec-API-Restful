@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import br.org.serratec.backend.model.Cliente;
 import br.org.serratec.backend.model.Pedido;
 
 public class PedidoDTO implements Serializable {
@@ -20,6 +22,7 @@ public class PedidoDTO implements Serializable {
 	private LocalDate dtEntrega;
 	private String status;
 	private Double vlTotal;
+	private Cliente cliente;
 
 	public PedidoDTO() {
 
@@ -37,6 +40,7 @@ public class PedidoDTO implements Serializable {
 				.collect(Collectors.toList());
 			this.vlTotal = pedido.getVlTotal();
 		}	
+		this.cliente = pedido.getCliente();
 	}
 
 	public Integer getId() {
@@ -89,6 +93,14 @@ public class PedidoDTO implements Serializable {
 
 	public void setItensPedido(List<ItemPedidoDTO> itensPedido) {
 		this.itensPedido = itensPedido;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 }

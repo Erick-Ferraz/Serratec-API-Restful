@@ -20,6 +20,7 @@ import br.org.serratec.backend.exception.EmailException;
 import br.org.serratec.backend.exception.UsernameException;
 import br.org.serratec.backend.model.Cliente;
 import br.org.serratec.backend.model.Endereco;
+import br.org.serratec.backend.model.Foto;
 import br.org.serratec.backend.repository.ClienteRepository;
 
 @Service
@@ -42,9 +43,6 @@ public class ClienteService {
 
 	private ClienteDTO adicionarUriFoto(Cliente cliente) {
 
-		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/clientes/{id}/foto")
-				.buildAndExpand(cliente.getId()).toUri();
-
 		ClienteDTO clienteDto = new ClienteDTO();
 		clienteDto.setId(cliente.getId());
 		clienteDto.setNome(cliente.getNome());
@@ -52,7 +50,14 @@ public class ClienteService {
 		clienteDto.setEmail(cliente.getEmail());
 		clienteDto.setTelefone(cliente.getTelefone());
 		clienteDto.setEndereco(cliente.getEndereco());
-		clienteDto.setUri(uri.toString());
+	
+//		Foto foto = new Foto();
+//		foto = fs.obterPorId(cliente.getFoto().getId());
+//		if (foto != null) {
+			URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/projetofinal/clientes/{id}/foto")
+					.buildAndExpand(cliente.getId()).toUri();
+			clienteDto.setUri(uri.toString());
+//		}
 
 		return clienteDto;
 	}
@@ -61,7 +66,7 @@ public class ClienteService {
 
 		List<ClienteDTO> clientesDTO = new ArrayList<ClienteDTO>();
 		List<Cliente> clientes = cr.findAll();
-
+		
 		for (Cliente cliente : clientes) {
 			clientesDTO.add(adicionarUriFoto(cliente));
 		}
@@ -86,7 +91,7 @@ public class ClienteService {
 		return null;
 	}
 
-	public ClienteDTO inserir(ClienteInserirDTO clienteInserirDto, MultipartFile file)
+	public ClienteDTO inserir(ClienteInserirDTO clienteInserirDto)
 			throws EmailException, CpfException, UsernameException, IOException {
 		if (cr.findByEmail(clienteInserirDto.getEmail()) != null) {
 			throw new EmailException("Email já cadastrado! Escolha outro.");
@@ -111,13 +116,14 @@ public class ClienteService {
 		cliente.setComplemento(clienteInserirDto.getComplemento());
 		cliente.setNumero(clienteInserirDto.getNumero());
 
-		fs.inserir(cr.save(cliente), file);
+//		fs.inserir(cr.save(cliente), file);
+		cr.save(cliente);;
 		emailConfig.enviarEmail(cliente.getEmail(), "API Rest: Cadastro confirmado!", cliente.toString());
 		adicionarUriFoto(cliente);
 		return new ClienteDTO(cliente);
 	}
 
-	public ClienteDTO atualizarPorId(Integer id, ClienteInserirDTO clienteInserirDto, MultipartFile file) throws IOException {
+	public ClienteDTO atualizarPorId(Integer id, ClienteInserirDTO clienteInserirDto) throws IOException {
 		if (cr.existsById(id)) {
 
 			Cliente cliente = new Cliente(clienteInserirDto);
@@ -136,7 +142,7 @@ public class ClienteService {
 			cliente.setComplemento(clienteInserirDto.getComplemento());
 			cliente.setNumero(clienteInserirDto.getNumero());
 
-			fs.inserir(cr.save(cliente), file);
+			cr.save(cliente);
 			emailConfig.enviarEmail(cliente.getEmail(), "API Rest: Alterações na conta!", cliente.toString());
 			adicionarUriFoto(cliente);
 			return new ClienteDTO(cliente);

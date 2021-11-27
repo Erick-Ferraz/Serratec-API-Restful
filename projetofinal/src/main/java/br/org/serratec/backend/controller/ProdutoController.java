@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/projetofinal/produtos")
 public class ProdutoController {
@@ -30,6 +32,7 @@ public class ProdutoController {
 	private ProdutoService ps;
 
 	@GetMapping
+	@CrossOrigin
 	@ApiOperation(value = "Listar produtos", notes = "Listagem de produtos")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Retorna todos os produtos"),
 			@ApiResponse(code = 401, message = "Erro de autenticação"),
@@ -66,7 +69,7 @@ public class ProdutoController {
 	}
 
 	@PutMapping("/atualizar/{id}")
-	@ApiOperation(value = "Atualizar um produto pelo nº de ID", notes = "Atualziação de produto pelo nº do ID")
+	@ApiOperation(value = "Atualizar um produto pelo nº de ID", notes = "Atualização de produto pelo nº do ID")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Atualiza um produto"),
 			@ApiResponse(code = 401, message = "Erro de autenticação"),
 			@ApiResponse(code = 403, message = "Recurso proibido"),

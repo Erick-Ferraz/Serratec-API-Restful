@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class PedidoController {
 	private PedidoService ps;
 	
 	@GetMapping
+	@CrossOrigin
 	@ApiOperation(value = "Listar pedidos", notes = "Listagem de pedidos")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Retorna todos os pedidos"),
 			@ApiResponse(code = 401, message = "Erro de autenticação"),
@@ -40,6 +42,7 @@ public class PedidoController {
 	}
 	
 	@GetMapping("/{id}")
+	@CrossOrigin
 	@ApiOperation(value = "Buscar pedido por ID", notes = "Busca um pedido pelo nº do ID")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Retorna um pedido"),
 			@ApiResponse(code = 401, message = "Erro de autenticação"),
@@ -54,6 +57,7 @@ public class PedidoController {
 	}
 	
 	@PostMapping("/adicionar")
+	@CrossOrigin
 	@ApiOperation(value = "Adicionar pedido", notes = "Inserção de pedido")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Insere um pedido"),
 			@ApiResponse(code = 401, message = "Erro de autenticação"),
@@ -65,6 +69,7 @@ public class PedidoController {
 	}
 	
 	@PutMapping("/atualizar/{id}")
+	@CrossOrigin
 	@ApiOperation(value = "Atualizar pedido por ID", notes = "Atualização de pedido pelo nº do ID")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Atualiza um pedido"),
 			@ApiResponse(code = 401, message = "Erro de autenticação"),
@@ -79,6 +84,7 @@ public class PedidoController {
 	}
 	
 	@DeleteMapping("/deletar/{id}")
+	@CrossOrigin
 	@ApiOperation(value = "Deletar pedido por ID", notes = "Exclusão de pedido pelo nº do ID")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Deleta um pedido"),
 			@ApiResponse(code = 401, message = "Erro de autenticação"),
