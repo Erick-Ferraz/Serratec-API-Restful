@@ -17,6 +17,7 @@ public class ProdutoDTO implements Serializable {
 	private Integer qtdEstoque;
 	private Float vlUnitario;
 	private String categoria;
+	private String uri;
 
 	public ProdutoDTO() {
 
@@ -79,6 +80,14 @@ public class ProdutoDTO implements Serializable {
 
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 }

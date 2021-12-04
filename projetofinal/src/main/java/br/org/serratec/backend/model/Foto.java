@@ -33,6 +33,10 @@ public class Foto {
 	@OneToOne
 	@JoinColumn(name = "id_cliente")
 	private Cliente cliente;
+	
+	@OneToOne
+	@JoinColumn(name = "id_produto")
+	private Produto produto;
 
 	public Integer getId() {
 		return id;
@@ -72,6 +76,14 @@ public class Foto {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public void setProduto(Produto produto) {
+		this.produto = produto;
 	}
 
 	@Override

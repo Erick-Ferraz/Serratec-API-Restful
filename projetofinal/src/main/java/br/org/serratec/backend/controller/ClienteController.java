@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.org.serratec.backend.dto.ClienteDTO;
+import br.org.serratec.backend.dto.ClienteFotoDTO;
 import br.org.serratec.backend.dto.ClienteInserirDTO;
 import br.org.serratec.backend.exception.CpfException;
 import br.org.serratec.backend.exception.EmailException;
@@ -106,7 +107,7 @@ public class ClienteController {
 			@ApiResponse(code = 403, message = "Recurso proibido"),
 			@ApiResponse(code = 404, message = "Recurso não encontrado"),
 			@ApiResponse(code = 500, message = "Erro de servidor") })
-	public ResponseEntity<Object> inserirFoto(@Valid @RequestPart Cliente cliente, @RequestParam("file") MultipartFile file) {
+	public ResponseEntity<Object> inserirFoto(@Valid @RequestPart ClienteFotoDTO cliente, @RequestParam("file") MultipartFile file) {
 		try {
 			return ResponseEntity.ok(fs.inserir(cliente, file));
 		} catch (Exception e) {
@@ -115,7 +116,7 @@ public class ClienteController {
 
 	}
 
-	@PostMapping(value = "/adicionar", consumes = "multipart/form-data")
+	@PostMapping("/adicionar")
 	@ApiOperation(value = "Adicionar um cliente", notes = "Inserção de um cliente")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Insere um cliente"),
 			@ApiResponse(code = 401, message = "Erro de autenticação"),
@@ -169,7 +170,7 @@ public class ClienteController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@DeleteMapping("/deletar")
+	@DeleteMapping("/deletar/{cpf}")
 	@ApiOperation(value = "Deletar um cliente por CPF", notes = "Exclusão de um cliente pelo nº do CPF")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Deleta um cliente"),
 			@ApiResponse(code = 401, message = "Erro de autenticação"),

@@ -31,7 +31,7 @@ public class ClienteService {
 
 	@Autowired
 	private EnderecoService es;
-	
+
 	@Autowired
 	private FotoService fs;
 
@@ -50,23 +50,18 @@ public class ClienteService {
 		clienteDto.setEmail(cliente.getEmail());
 		clienteDto.setTelefone(cliente.getTelefone());
 		clienteDto.setEndereco(cliente.getEndereco());
-	
-//		Foto foto = new Foto();
-//		foto = fs.obterPorId(cliente.getFoto().getId());
-//		if (foto != null) {
-			URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/projetofinal/clientes/{id}/foto")
-					.buildAndExpand(cliente.getId()).toUri();
-			clienteDto.setUri(uri.toString());
-//		}
+		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/projetofinal/clientes/{id}/foto")
+				.buildAndExpand(cliente.getId()).toUri();
+		clienteDto.setUri(uri.toString());
 
 		return clienteDto;
 	}
-	
+
 	public List<ClienteDTO> listar() {
 
 		List<ClienteDTO> clientesDTO = new ArrayList<ClienteDTO>();
 		List<Cliente> clientes = cr.findAll();
-		
+
 		for (Cliente cliente : clientes) {
 			clientesDTO.add(adicionarUriFoto(cliente));
 		}
@@ -115,11 +110,10 @@ public class ClienteService {
 		cliente.setSenha(cripto.encode(clienteInserirDto.getSenha()));
 		cliente.setComplemento(clienteInserirDto.getComplemento());
 		cliente.setNumero(clienteInserirDto.getNumero());
-
-//		fs.inserir(cr.save(cliente), file);
-		cr.save(cliente);;
-		emailConfig.enviarEmail(cliente.getEmail(), "API Rest: Cadastro confirmado!", cliente.toString());
 		adicionarUriFoto(cliente);
+
+		cr.save(cliente);
+		emailConfig.enviarEmail(cliente.getEmail(), "API Rest: Cadastro confirmado!", cliente.toString());
 		return new ClienteDTO(cliente);
 	}
 

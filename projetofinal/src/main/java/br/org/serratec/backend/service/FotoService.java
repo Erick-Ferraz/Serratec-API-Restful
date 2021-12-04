@@ -6,10 +6,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import br.org.serratec.backend.dto.ClienteFotoDTO;
+import br.org.serratec.backend.dto.ProdutoFotoDTO;
 import br.org.serratec.backend.model.Cliente;
 import br.org.serratec.backend.model.Foto;
+import br.org.serratec.backend.model.Produto;
 import br.org.serratec.backend.repository.ClienteRepository;
 import br.org.serratec.backend.repository.FotoRepository;
+import br.org.serratec.backend.repository.ProdutoRepository;
 
 @Service
 public class FotoService {
@@ -19,13 +24,28 @@ public class FotoService {
 	
 	@Autowired
 	private ClienteRepository cr;
+	
+	@Autowired
+	private ProdutoRepository pr;
 
-	public Foto inserir(Cliente cliente, MultipartFile file) throws IOException {
+	public Foto inserir(ClienteFotoDTO cliente, MultipartFile file) throws IOException {
 		Foto foto = new Foto();
 		foto.setNome(file.getName());
 		foto.setDados(file.getBytes());
 		foto.setTipo(file.getContentType());
-		foto.setCliente(cliente);
+		Cliente client = cr.getById(cliente.getId());
+		foto.setCliente(client);
+
+		return fr.save(foto);
+	}
+	
+	public Foto inserirProduto(ProdutoFotoDTO produto, MultipartFile file) throws IOException {
+		Foto foto = new Foto();
+		foto.setNome(file.getName());
+		foto.setDados(file.getBytes());
+		foto.setTipo(file.getContentType());
+		Produto prod = pr.getById(produto.getId());
+		foto.setProduto(prod);
 
 		return fr.save(foto);
 	}
